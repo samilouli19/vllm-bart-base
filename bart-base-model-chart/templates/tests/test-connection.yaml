@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "bart-base-model-chart.fullname" . }}-test-connection"
+  labels:
+    {{- include "bart-base-model-chart.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "bart-base-model-chart.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
